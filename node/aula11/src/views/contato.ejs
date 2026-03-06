@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Contato</title>
+  <style>
+    /* Reset simples */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; color: #222; background: #f4f7fb; -webkit-font-smoothing:antialiased; }
+
+    :root{
+      --accent: #2563eb;
+      --bg-card: #ffffff;
+      --muted: #6b7280;
+      --radius: 12px;
+      --max-width: 900px;
+      --gap: 1rem;
+    }
+
+    header{
+      padding: 2rem 1rem 0.5rem;
+      text-align: center;
+    }
+    header h1{
+      margin: 0;
+      font-size: 1.5rem;
+      letter-spacing: -0.3px;
+    }
+    header p{
+      margin: 6px 0 1.6rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    main{
+      display: flex;
+      justify-content: center;
+      padding: 1rem;
+      padding-bottom: 3rem;
+    }
+
+    .card{
+      width: 100%;
+      max-width: var(--max-width);
+      background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.95));
+      border-radius: var(--radius);
+      box-shadow: 0 8px 30px rgba(16,24,40,0.08);
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    /* Left: form */
+    form {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--gap);
+    }
+
+    label {
+      display: block;
+      font-size: 0.9rem;
+      margin-bottom: 0.35rem;
+      color: #111827;
+      font-weight: 600;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="file"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 0.72rem 0.9rem;
+      border-radius: 10px;
+      border: 1px solid #e6e9ef;
+      background: #fff;
+      font-size: 0.95rem;
+      outline: none;
+      transition: box-shadow .15s, border-color .12s, transform .08s;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: rgba(37,99,235,0.8);
+      box-shadow: 0 6px 18px rgba(37,99,235,0.08);
+    }
+
+    textarea {
+      min-height: 140px;
+      resize: vertical;
+    }
+
+    .helper {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 0.25rem;
+    }
+
+    .actions {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      margin-top: 0.4rem;
+    }
+
+    button[type="submit"]{
+      background: linear-gradient(0deg, var(--accent), #3b82f6);
+      border: none;
+      color: white;
+      padding: 0.68rem 1.1rem;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(59,130,246,0.18);
+      transition: transform .12s, box-shadow .12s, opacity .12s;
+    }
+    button[type="submit"]:active { transform: translateY(1px); }
+    button[type="submit"]:hover { opacity: 0.98; }
+
+    button[type="button"]{
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid #e6e9ef;
+      padding: 0.6rem 0.9rem;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .right-panel {
+      background: linear-gradient(180deg, #fbfdff, #ffffff);
+      padding: 1.2rem;
+      border-radius: 10px;
+      border: 1px solid #f0f3f7;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      justify-content: center;
+    }
+
+    .contact-item {
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+    }
+    .contact-item svg { flex-shrink: 0; margin-top: 4px; }
+
+    .contact-item p { margin: 0; font-size: 0.95rem; color: #111827; }
+    .contact-item small { display:block; color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
+
+    footer {
+      margin-top: 1.2rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    /* responsive */
+    @media (max-width: 880px){
+      .card { grid-template-columns: 1fr; padding: 1.25rem; }
+      .field-row { grid-template-columns: 1fr; }
+      .right-panel { order: 2; }
+    }
+
+    /* small visual polish */
+    .required { color: #ef4444; margin-left: 6px; font-weight: 700; font-size: 0.9rem; vertical-align: middle; }
+
+    /* success message */
+    .toast {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      bottom: 24px;
+      background: #0f172a;
+      color: #e6f0ff;
+      padding: 0.9rem 1.1rem;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(2,6,23,0.35);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .18s, transform .18s;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+      pointer-events: auto;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Fale com a gente</h1>
+    <p>Tem uma dúvida, sugestão ou quer trabalhar com a gente? Envie uma mensagem — responderemos em breve.</p>
+  </header>
+
+  <main>
+    <section class="card" aria-labelledby="contact-heading">
+      <div>
+        <h2 id="contact-heading" style="margin:0 0 0.6rem; font-size:1.1rem;">Formulário de contato</h2>
+
+        <form id="contactForm" action="#" method="post" novalidate>
+          <div class="field-row">
+            <div>
+              <label for="name">Nome <span class="required" aria-hidden="true">*</span></label>
+              <input id="name" name="name" type="text" placeholder="Seu nome completo" required />
+            </div>
+
+            <div>
+              <label for="email">E-mail <span class="required" aria-hidden="true">*</span></label>
+              <input id="email" name="email" type="email" placeholder="seu@exemplo.com" required />
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div>
+              <label for="phone">Telefone</label>
+              <input id="phone" name="phone" type="tel" placeholder="(11) 9 9999-9999" />
+            </div>
+
+            <div>
+              <label for="subject">Assunto</label>
+              <select id="subject" name="subject" aria-label="Assunto da mensagem">
+                <option value="">— Selecione —</option>
+                <option>Suporte</option>
+                <option>Parceria</option>
+                <option>Trabalhe conosco</option>
+                <option>Outro</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label for="message">Mensagem <span class="required" aria-hidden="true">*</span></label>
+            <textarea id="message" name="message" placeholder="Escreva sua mensagem..." required></textarea>
+            <div class="helper">Mínimo de 10 caracteres.</div>
+          </div>
+
+          <div>
+            <label for="attachment">Anexo (opcional)</label>
+            <input id="attachment" name="attachment" type="file" accept=".pdf,.doc,.docx,.png,.jpg" />
+            <div class="helper">PDF, DOC ou imagem — máximo conforme servidor (cliente só aceita seleção).</div>
+          </div>
+
+          <div style="display:flex; align-items:center; gap:0.6rem;">
+            <input id="newsletter" name="newsletter" type="checkbox" />
+            <label for="newsletter" style="margin:0; font-weight:600;">Quero receber novidades por e-mail</label>
+          </div>
+
+          <div class="actions">
+            <button type="submit">Enviar mensagem</button>
+            <button type="button" id="resetBtn">Limpar</button>
+          </div>
+
+          <p class="helper" style="margin-top:0.6rem;">Ao enviar, você aceita nossos <a href="#" style="color:var(--accent); text-decoration:none;">termos de uso</a>.</p>
+        </form>
+      </div>
+
+      <aside class="right-panel" aria-label="Informações de contato">
+        <div class="contact-item">
+          <!-- simple phone icon -->
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M3 5.5C3 5.22386 3.22386 5 3.5 5H7.5C7.77614 5 8 5.22386 8 5.5V8.5C8 8.77614 7.77614 9 7.5 9H6.12132C6.74154 11.0258 7.97421 12.9742 9.62132 14.6213C11.2684 16.2684 13.2168 17.5011 15.2426 18.1213V16.5C15.2426 16.2239 15.4665 16 15.7426 16H18.7426C19.0188 16 19.2426 16.2239 19.2426 16.5V20.5C19.2426 20.7761 19.0188 21 18.7426 21C10.7071 21 4 14.2929 4 6.25736C4 5.98122 4.22386 5.75736 4.5 5.75736H3.5C3.22386 5.75736 3 5.5335 3 5.25736V5.5Z" fill="#111827"/>
+          </svg>
+          <div>
+            <p>+55 (11) 99999-9999</p>
+            <small>Seg — Sex, 9h — 18h</small>
+          </div>
+        </div>
+
+        <div class="contact-item" style="margin-top:0.25rem;">
+          <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2C8.691 2 6 4.691 6 8c0 5.25 6 12 6 12s6-6.75 6-12c0-3.309-2.691-6-6-6zM12 10.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z" fill="#111827"/>
+          </svg>
+          <div>
+            <p>Rua Exemplo, 123 — Bairro</p>
+            <small>São Paulo — SP</small>
+          </div>
+        </div>
+
+        <div class="contact-item" style="margin-top:0.25rem;">
+          <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M2 5.5C2 4.67157 2.67157 4 3.5 4H20.5C21.3284 4 22 4.67157 22 5.5V18.5C22 19.3284 21.3284 20 20.5 20H3.5C2.67157 20 2 19.3284 2 18.5V5.5ZM4 6v.417l8 5.333 8-5.333V6l-8 5.333L4 6z" fill="#111827"/>
+          </svg>
+          <div>
+            <p>contato@exemplo.com</p>
+            <small>Resposta em até 48 horas úteis</small>
+          </div>
+        </div>
+
+        <footer>
+          © <span id="year"></span> Sua Empresa — Todos os direitos reservados
+        </footer>
+      </aside>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite">Mensagem enviada — Obrigado!</div>
+
+  <script>
+    // pequeno script opcional para simular envio (remove se quiser puramente HTML/CSS)
+    (function(){
+      const form = document.getElementById('contactForm');
+      const toast = document.getElementById('toast');
+      const resetBtn = document.getElementById('resetBtn');
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        // validação nativa
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
+        // validação adicional: mensagem (mínimo 10 chars)
+        const msg = form.message.value.trim();
+        if (msg.length < 10) {
+          alert('Por favor, escreva uma mensagem com pelo menos 10 caracteres.');
+          form.message.focus();
+          return;
+        }
+        // aqui você chamaria fetch() para seu backend ou API.
+        // Simulamos sucesso:
+        toast.classList.add('show');
+        setTimeout(()=> toast.classList.remove('show'), 3500);
+        form.reset();
+      });
+
+      resetBtn.addEventListener('click', ()=> form.reset());
+    })();
+  </script>
+</body>
+</html>
