@@ -3,14 +3,23 @@ const route = express.Router();
 
 const loginController = require("./src/controllers/loginController");
 const homeController = require('./src/controllers/homeController');
+const contatoController = require('./src/controllers/contatoController');
+
+const { loginRequired } = require("./src/middlewares/middleware");
 
 // Rotas da home
 route.get('/', homeController.index);
 
 // Rotas de login
 route.get('/login/index', loginController.index);
-route.post("/login/register", loginController.register);
+route.post("/login/register", loginController.register, loginController.login);
 route.post("/login/login", loginController.login);
 route.get("/login/logout", loginController.logout);
 
+// Rotas de contato:
+route.get("/contato/index", loginRequired, contatoController.index);
+route.post("/contato/register", loginRequired, contatoController.register);
+route.get("/contato/index/:id", loginRequired, contatoController.editIndex);
+
+// PAREI NO MINUTO 12,42 DO VIDEO 
 module.exports = route;
