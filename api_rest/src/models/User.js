@@ -57,6 +57,11 @@ export default class User extends Model {
     return this;
   }
 
+  passwordIsValid(password) {
+
+    return bcrypt.compare(password, this.password_hash);
+
+  }
   // static associate(models) {
   //   this.hasMany(models.Foto, { foreignKey: 'aluno_id' });
   // }
